@@ -23,21 +23,11 @@ const func: DeployFunction = async function ({
 }: HardhatRuntimeEnvironment) {
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
-  const poolConfig = await loadPoolConfig(MARKET_NAME as ConfigNames);
-  const network = (
-    process.env.FORK ? process.env.FORK : hre.network.name
-  ) as eNetwork;
 
   const { address: addressesProviderAddress } = await deployments.get(
     POOL_ADDRESSES_PROVIDER_ID
   );
 
-  if (isL2PoolSupported(poolConfig)) {
-    console.log(
-      `[INFO] Skipped common Pool due current network '${network}' is not supported`
-    );
-    return;
-  }
   const commonLibraries = await getPoolLibraries();
 
   // Deploy common Pool contract
